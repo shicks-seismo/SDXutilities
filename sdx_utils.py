@@ -2,7 +2,9 @@
 """
 Utilities for working with SDX (Seismic Data Explorer) event files
 Functions:
-    - sdxtoquakeml: Convert SDX to QuakeML format using ObsPy inventory structure
+    - sdxtoquakeml: Convert SDX to QuakeML format using ObsPy inventory
+      structure
+
 """
 import glob
 from itertools import islice
@@ -21,14 +23,14 @@ def sdxtoquakeml(sdx_dir, out_xml,
     Convert SDX to QuakeML format using ObsPy inventory structure.
     SDX filename prefix is stored under event description.
     Input parameters:
-        - sdx_dir: directory containing sdx files
-        - out_xml: Filename of quakeML file
-        - time_uncertainties: Tuple containing time uncertainities for mapping
-          from phase weight
-        - catalog_description
-        - cat_agency_id
-        - author
-        - vel_mod_id
+        - sdx_dir: directory containing sdx files (required)
+        - out_xml: Filename of quakeML file (required)
+        - time_uncertainties: List containing time uncertainities in seconds
+          for mapping from weights 0-4, respectively (optional)
+        - catalog_description (optional)
+        - cat_agency_id (optional)
+        - author (optional)
+        - vel_mod_id (optional)
     Output:
         - xml catalog in QuakeML format.
     """
@@ -40,8 +42,10 @@ def sdxtoquakeml(sdx_dir, out_xml,
                       version=catalog_version))
 
     # Read in sdx files in directory, recursively
-    for sdx_file_path in glob.iglob("{:}/**/*.sdx".format(sdx_dir),
-                                    recursive=True):
+    files = glob.glob("{:}/**/*.sdx".format(sdx_dir), recursive=True)
+    if len(files) == 0:
+        print("No SDX files found in path. Exiting")
+    for sdx_file_path in files:
         print("Working on ", sdx_file_path.split('/')[-1])
 
         # Set-up event
