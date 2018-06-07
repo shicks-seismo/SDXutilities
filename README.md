@@ -18,3 +18,5 @@ quakemltosdx("test.xml",
              ["sdx_crust1.txt", 1.73, 2, 10, 20, 20, 500])
 ```
 stations.dat is a text file containing station_code, latitude(dd), longitude(dd) and elevation in m.
+This command will output an SDX file for each event with a filename of [event_id].sdx where event_id is based
+on the event's origin time and has the format: eYYYYMMDD.HHMMSS.
